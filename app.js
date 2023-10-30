@@ -5,12 +5,18 @@ import logger from "morgan";
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 
-mongoose.connect('mongodb://localhost/express-api');
-mongoose.set('debug', true);
+mongoose.connect(process.env.DATABASE_URL ?? 'mongodb://localhost/express-api');
+
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.set('debug', true);
+}
 
 const app = express();
 
-app.use(logger("dev"));
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger("dev"));
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

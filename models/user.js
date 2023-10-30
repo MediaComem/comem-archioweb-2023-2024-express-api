@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 
 // Define the schema for users
 const userSchema = new Schema({
-  name: String,
+  name: {
+    type: String,
+    unique: true
+  },
   password: String,
   role: String
 });
@@ -15,6 +18,7 @@ userSchema.set("toJSON", {
 function transformJsonUser(doc, json, options) {
   // Remove the hashed password from the generated JSON.
   delete json.password;
+  delete json.__v;
   return json;
 }
 
